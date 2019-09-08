@@ -3,9 +3,10 @@
     "ecmaVersion": 2018
   },
   "rules": {
-    "no-console": "warn"
+    "no-console": "warn",
+    "quotes": ["error", "single"]
   },
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "eslint-config-prettier"],
   "env": {
     "browser": true
   }
