@@ -1,12 +1,18 @@
-import React from 'react';
-import SignUpPage from './pages/SignUpPage';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-function App() {
+import SignUpPage from "./pages/SignUpPage";
+
+const App = () => {
   return (
-    <div className="App">
-      <SignUpPage />
-    </div>
+    <Router>
+      <div>
+        <Route exact path="/" component={SignUpPage} />
+        <Route exact path="/login" component={SignUpPage} />
+        <Route exact path="/signup" component={SignUpPage} />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

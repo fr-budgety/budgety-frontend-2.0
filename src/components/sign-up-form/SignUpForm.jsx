@@ -1,8 +1,12 @@
 /** @format */
 
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
+
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import app from '../../config/base';
 
 const INPUT_ERRORS = {
   required: 'This field is required',
@@ -12,6 +16,15 @@ const INPUT_ERRORS = {
 };
 
 class SignUpForm extends Component {
+  handleSignUp = async ({ email, password }) => {
+    try {
+      await app.auth().createUserWithEmailAndPassword(email, password);
+      this.props.history.push('/');
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   render() {
     return (
       <div className="SignUpForm">
@@ -22,7 +35,7 @@ class SignUpForm extends Component {
             validationSchema={SignupSchema}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+                this.handleSignUp(values);
                 setSubmitting(false);
               }, 400);
             }}
@@ -104,4 +117,8 @@ const SignupSchema = Yup.object().shape({
     }),
 });
 
-export default SignUpForm;
+SignUpForm.propTypes = {
+  history: PropTypes.object.isRequired,
+};
+
+export default withRouter(SignUpForm);

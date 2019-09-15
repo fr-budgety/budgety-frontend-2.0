@@ -1,11 +1,13 @@
-import React from 'react'
-import LoginForm from '../components/sign-up-form/SignUpForm'
+/** @format */
 
- const SignUpPage = () => {
+import React from 'react';
+import SignUpForm from '../components/sign-up-form/SignUpForm';
+
+const SignUpPage = () => {
   return (
     <div>
-      <LoginForm/>
+      <SignUpForm />
     </div>
-  )
-}
+  );
+};
 export default SignUpPage;
