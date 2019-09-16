@@ -5,8 +5,11 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 
 import { Formik } from 'formik';
+import Form from '../form/Form';
 import * as Yup from 'yup';
 import app from '../../config/base';
+import FormGroup from '../form/FormGroup';
+import Input from '../form/Input';
 
 const INPUT_ERRORS = {
   required: 'This field is required',
@@ -16,6 +19,10 @@ const INPUT_ERRORS = {
 };
 
 class SignUpForm extends Component {
+  /**
+   * Async
+   * @function handleSignup
+   */
   handleSignUp = async ({ email, password }) => {
     try {
       await app.auth().createUserWithEmailAndPassword(email, password);
@@ -33,66 +40,61 @@ class SignUpForm extends Component {
           <Formik
             initialValues={{ email: '', password: '', confirmPassword: '' }}
             validationSchema={SignupSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                this.handleSignUp(values);
-                setSubmitting(false);
-              }, 400);
+            onSubmit={async (values, { setSubmitting }) => {
+              await this.handleSignUp(values);
+              setSubmitting(false);
             }}
           >
             {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="exampleInputEmail1">Email address</label>
-                  <input
-                    name="email"
+              <Form handleSubmit={handleSubmit}>
+                <FormGroup>
+                  <Input
                     type="email"
-                    className={`form-control ${errors.email && touched.email && 'is-invalid'}`}
-                    aria-describedby="emailHelp"
+                    name="email"
+                    label="Email address"
+                    className="form-control"
                     placeholder="Enter email"
                     value={values.email}
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    handleChange={handleChange}
+                    errors={errors.email}
+                    touched={touched.email}
+                    helperText="We will never share your email with anyone else."
                   />
-                  <div className="invalid-feedback">{errors.email && touched.email && errors.email}</div>
-                  <small id="emailHelp" className="form-text text-muted">
-                    We will never share your email with anyone else.
-                  </small>
-                </div>
-                <div className="form-group">
-                  <label>Password</label>
-                  <input
+                </FormGroup>
+                <FormGroup>
+                  <Input
                     type="password"
                     name="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    label="Password"
+                    className="form-control"
+                    placeholder="Enter password"
                     value={values.password}
-                    className={`form-control ${errors.password && touched.password && 'is-invalid'}`}
+                    onBlur={handleBlur}
+                    handleChange={handleChange}
+                    errors={errors.password}
+                    touched={touched.password}
                   />
-                  <div className="invalid-feedback">{errors.password && touched.password && errors.password}</div>
-                  <small id="emailHelp" className="form-text text-muted">
-                    Password must be between 8 and 16 charachters
-                  </small>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="exampleInputPassword1">Confirm Password</label>
-                  <input
+                </FormGroup>
+                <FormGroup>
+                  <Input
                     type="password"
                     name="confirmPassword"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    label="Password"
+                    className="form-control"
+                    placeholder="Re-type password"
                     value={values.confirmPassword}
-                    className={`form-control ${errors.confirmPassword && touched.confirmPassword && 'is-invalid'}`}
+                    onBlur={handleBlur}
+                    handleChange={handleChange}
+                    errors={errors.confirmPassword}
+                    touched={touched.confirmPassword}
                   />
-                  <div className="invalid-feedback">
-                    {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}
-                  </div>
-                </div>
+                </FormGroup>
 
                 <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                   Submit
                 </button>
-              </form>
+              </Form>
             )}
           </Formik>
         </div>
